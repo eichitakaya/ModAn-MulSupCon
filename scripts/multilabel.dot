@@ -1,0 +1,18 @@
+digraph hierarchy {
+    rankdir=LR;
+    CT   -> abdomen;
+    CT   -> lung;
+    CT   -> brain;
+    CT   -> knee;
+    CT   -> "ankle/foot";
+    MR   -> abdomen;
+    MR   -> lung;
+    MR   -> brain;
+    MR   -> knee;
+    MR   -> "ankle/foot";
+    US   -> abdomen;
+    US   -> lung;
+    US   -> brain;
+    US   -> knee;
+    US   -> "ankle/foot";
+}
