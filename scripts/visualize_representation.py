@@ -19,8 +19,8 @@ transform = transforms.Compose([
     transforms.CenterCrop(224),
     transforms.ToTensor(),])
 
-# 1-10まで繰り返し、可視化画像を保存する
-for t in range(1, 11):
+# 1-1000まで100ごとに繰り返し、可視化画像を保存する
+for t in range(1, 1001, 100):
     # モデルの読み込み
     model_path = f"../experiment/run_0/{t}_checkpoint.pth.tar"
     # resnet18を読み込む
@@ -64,7 +64,7 @@ for t in range(1, 11):
     reducer = umap.UMAP(n_components=2)
     embeddings = reducer.fit_transform(vectors)
     cmap = matplotlib.cm.get_cmap('tab20', 11)  # 11色で分割
-    plt.scatter(embeddings[:, 0], embeddings[:, 1], c=targets, cmap=cmap)
+    plt.scatter(embeddings[:, 0], embeddings[:, 1], c=targets, cmap=cmap, s=3)
     plt.colorbar()
     plt.savefig(f"../visualize/{t}_umap.png")
     plt.close()
