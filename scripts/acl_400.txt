@@ -1,0 +1,4 @@
+acl
+WilcoxonResult(statistic=55.0, pvalue=0.0009765625)WilcoxonResult(statistic=55.0, pvalue=0.0009765625)breast
+WilcoxonResult(statistic=55.0, pvalue=0.0009765625)WilcoxonResult(statistic=55.0, pvalue=0.0009765625)thyroid
+WilcoxonResult(statistic=31.0, pvalue=0.384765625)WilcoxonResult(statistic=43.0, pvalue=0.0654296875)

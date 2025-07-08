@@ -62,21 +62,78 @@ class miniRINmultilabel(Dataset):
             image = self.transform(image)
         
         return image, target
+
+class RadImageNetDataset(Dataset):
+    """
+    RadImageNetのデータセットクラス
+    全てをメモリに置くことはせず、パスのリストだけ持っておく。
+    ミニバッチのサンプリング時は、パスのリストからランダムにパスを選択する。
+    ラベルは165個（../../data/miniRIN/**/**/**のフォルダ名がラベル）
+    """
+    def __init__(self, transform=None):
+        # csvファイルを読み込む
+        self.df = pd.read_csv("../../data/miniRIN/multilabel.csv")
+        # パスのリストを取得
+        self.paths = self.df["filepath"].tolist()
+        # ラベルの辞書を作成（{"marrow_inflammation": 164}みたいな感じ）
+        self.labels_dict = make_label_dict(self.df)
+        #print(self.labels_dict)
+        # 画像の変換を定義
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.paths)
     
+    def __getitem__(self, idx):
+        filename = self.paths[idx]
+        image = Image.open(filename).convert('L')
+
+        # filenameに対応するfilepathをdfから取ってくる
+        filepath = self.df.loc[self.df["filepath"] == filename].iloc[0]["filepath"]
+        # filepathのフォルダ名がラベル
+        labels = filepath.split("/")[4:7]
+        labels = "/".join(labels)
+        labels = self.labels_dict[labels]
+
+        if self.transform is not None:
+            image = self.transform(image)
+
+        return image, labels
+
+
+def make_label_dict(df):
+    label_list = []
+    for i, row in df.iterrows():
+        filepath = row["filepath"]
+        #print(filepath)
+        labels = filepath.split("/")[4:7]
+        labels = "/".join(labels)
+        #print(labels)
+        label_list.append(labels)
+    labels_set = set(label_list)
+    labels_dict = {label: i for i, label in enumerate(labels_set)}
+    return labels_dict
 
 if __name__ == "__main__":
-    dataset = miniRINmultilabel(transform=TwoCropTransform(transforms.Compose([
-                                transforms.RandomResizedCrop(size=224),
-                                transforms.RandomHorizontalFlip(),
-                                transforms.RandomApply([
-                                    transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)
-                                ], p=0.8),
-                                transforms.RandomGrayscale(p=0.2),
-                                transforms.ToTensor(),
-                                ])))
+    # dataset = miniRINmultilabel(transform=TwoCropTransform(transforms.Compose([
+    #                             transforms.RandomResizedCrop(size=224),
+    #                             transforms.RandomHorizontalFlip(),
+    #                             transforms.RandomApply([
+    #                                 transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)
+    #                             ], p=0.8),
+    #                             transforms.RandomGrayscale(p=0.2),
+    #                             transforms.ToTensor(),
+    #                             ])))
+    # # データを1枚だけ取り出す
+    # dataloader = DataLoader(dataset, batch_size=3, shuffle=True)
+    # for image, target in dataloader:
+    #     print(image[0].shape)
+    #     print(target.shape)
+    #     break
+    dataset = RadImageNetDataset(transform=transforms.ToTensor())
     # データを1枚だけ取り出す
     dataloader = DataLoader(dataset, batch_size=3, shuffle=True)
     for image, target in dataloader:
-        print(image[0].shape)
+        print(image[0].shape, target)
         print(target.shape)
         break

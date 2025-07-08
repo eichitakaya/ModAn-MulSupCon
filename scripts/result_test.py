@@ -44,7 +44,7 @@ breast_ssl_list = []
 for i in range(10):
     breast_imagenet_list.append(pd.read_csv(f"../results/breast/miniRIN_HML_imagenet/{i+1}/breast/stats.csv").iloc[-1, :])
     breast_scratch_list.append(pd.read_csv(f"../results/breast/miniRIN_HML_scratch/{i+1}/breast/stats.csv").iloc[-1, :]) 
-    breast_ssl_list.append(pd.read_csv(f"../results/breast/miniRIN_HML_SSL/{i+1}/breast/stats.csv").iloc[-1, :])
+    breast_ssl_list.append(pd.read_csv(f"../results/breast/miniRIN_HML_SSL_{args.model_num}/{i+1}/breast/stats.csv").iloc[-1, :])
 
 # listをDataFrameに変換
 breast_imagenet_df = pd.DataFrame(breast_imagenet_list)
@@ -65,7 +65,7 @@ thyroid_ssl_list = []
 for i in range(10):
     thyroid_imagenet_list.append(pd.read_csv(f"../results/thyroid/miniRIN_HML_imagenet/{i+1}/thyroid/stats.csv").iloc[-1, :])
     thyroid_scratch_list.append(pd.read_csv(f"../results/thyroid/miniRIN_HML_scratch/{i+1}/thyroid/stats.csv").iloc[-1, :])
-    thyroid_ssl_list.append(pd.read_csv(f"../results/thyroid/miniRIN_HML_SSL/{i+1}/thyroid/stats.csv").iloc[-1, :])
+    thyroid_ssl_list.append(pd.read_csv(f"../results/thyroid/miniRIN_HML_SSL_{args.model_num}/{i+1}/thyroid/stats.csv").iloc[-1, :])
 
 # listをDataFrameに変換
 thyroid_imagenet_df = pd.DataFrame(thyroid_imagenet_list)
