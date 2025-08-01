@@ -1,7 +1,7 @@
 # ../experiment/run_0/t_checkpoint.pth.tarのモデルを読み込む（tは1-10）
 # ../../data/miniRINの画像に対するベクトルを取得
 # UMAPで可視化
-# t=1から10まで繰り返し、可視化画像を保存する
+# 5種類のモデル（scratch, imagenet, SSL, radimagenet, simclr）を1つの図に並べて可視化
 
 import os
 import torch
@@ -9,37 +9,77 @@ import numpy as np
 import umap
 import matplotlib.pyplot as plt
 import matplotlib
+import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchvision.models import resnet18
 import torchvision.transforms as transforms
 from datasets import miniRINmultilabel
 from utils import one_hot2label
+import argparse
+from train_simCLR import SimCLR
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--model_name", type=str, default="all")
+args = parser.parse_args()
+
 
 transform = transforms.Compose([
     transforms.CenterCrop(224),
     transforms.ToTensor(),])
 
-# 1-1000まで100ごとに繰り返し、可視化画像を保存する
-for t in range(1, 1001, 100):
-    # モデルの読み込み
-    model_path = f"../experiment/run_0/{t}_checkpoint.pth.tar"
-    # resnet18を読み込む
-    model = resnet18(weights=None)
-    # 1チャンネルに変換
-    model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
-    model.load_state_dict(torch.load(model_path)["model_state_dict"])
-    model.fc = torch.nn.Identity()
-    model.eval()
+
+def load_model(model_name):
+    """指定されたモデル名のモデルを読み込む"""
+    if model_name == "radimagenet":
+        model = resnet18(pretrained=False)
+        model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        num_ftrs = model.fc.in_features
+        model.fc = nn.Linear(num_ftrs, 165)
+        model.load_state_dict(torch.load(f"../experiment/radimagenet_sup_200epoch.pth"))
+        model.fc = torch.nn.Identity()
+        model.eval()
+
+    elif model_name == "simclr":
+        simclr_model = SimCLR(proj_hidden_dim=2048, proj_out_dim=128)
+        simclr_model.load_state_dict(torch.load(f"../experiment/simCLR/simclr_final.pth")["model"])
+        # encoder部分のみを使用（projectorは除去）
+        model = simclr_model.encoder
+        model.fc = torch.nn.Identity()
+        model.eval()
+        
+    elif model_name == "imagenet":
+        model = resnet18(pretrained=True)
+        model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        model.fc = torch.nn.Identity()
+        model.eval()
+
+    elif model_name == "scratch":
+        model = resnet18(pretrained=False)
+        model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        model.fc = torch.nn.Identity()
+        model.eval()
+
+    elif model_name == "SSL":
+        model_path = f"/workspace/HMC4RadImageNet/experiment/run_0/200_checkpoint.pth.tar"
+        # resnet18を読み込む
+        model = resnet18(weights=None)
+        # 1チャンネルに変換
+        model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        model.load_state_dict(torch.load(model_path)["model_state_dict"])
+        model.fc = torch.nn.Identity()
+        model.eval()
+    else:
+        raise ValueError(f"Invalid model name: {model_name}")
     
+    return model
 
-    # データセットの読み込み
-    dataset = miniRINmultilabel(transform=transforms.ToTensor())
-    dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
 
-    # 全ての画像に対するベクトルを取得
+def get_embeddings(model, dataloader):
+    """モデルを使用してデータセットから埋め込みベクトルを取得"""
     vectors = []
     targets = []
-    cnt = 0
+    
     for batch in dataloader:
         images = batch[0]
         target = batch[1]
@@ -47,25 +87,74 @@ for t in range(1, 1001, 100):
         vectors.append(outputs[0].detach().cpu().numpy())
         target = one_hot2label(target)
         targets.append(target)
-        cnt += 1
     
-    # targetsを数値ラベルに変換して辞書に格納
-    label_dict = {}
-    # targetsの集合を取得
-    unique_targets = set(targets)
-    for i, target in enumerate(unique_targets):
-        label_dict[target] = i
-    # targetsを数値ラベルに変換
-    targets = [label_dict[target] for target in targets]
-    print(unique_targets)
-    print(label_dict)
+    return vectors, targets
 
+
+def visualize_single_model(model_name, vectors, targets, ax, label_dict):
+    """単一モデルの可視化"""
     # UMAPで可視化
-    reducer = umap.UMAP(n_components=2)
+    reducer = umap.UMAP(n_components=2, random_state=42)
     embeddings = reducer.fit_transform(vectors)
+    
+    # 数値ラベルに変換
+    numeric_targets = [label_dict[target] for target in targets]
+    
+    # プロット
     cmap = matplotlib.cm.get_cmap('tab20', 11)  # 11色で分割
-    plt.scatter(embeddings[:, 0], embeddings[:, 1], c=targets, cmap=cmap, s=3)
-    plt.colorbar()
-    plt.savefig(f"../visualize/{t}_umap.png")
-    plt.close()
+    scatter = ax.scatter(embeddings[:, 0], embeddings[:, 1], c=numeric_targets, cmap=cmap, s=3, alpha=0.7)
+    ax.set_title(f'{model_name.upper()}', fontsize=12, fontweight='bold')
+    ax.set_xlabel('UMAP1')
+    ax.set_ylabel('UMAP2')
+    ax.grid(True, alpha=0.3)
+    
+    return scatter
 
+
+def main():
+    # データセットの読み込み
+    dataset = miniRINmultilabel(transform=transforms.ToTensor())
+    dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
+    
+    # ラベル辞書を作成（全モデルで共通）
+    _, targets = get_embeddings(load_model("scratch"), dataloader)
+    unique_targets = sorted(set(targets))
+    label_dict = {target: i for i, target in enumerate(unique_targets)}
+    
+    print("Label dictionary:", label_dict)
+    
+    # モデル名のリスト
+    model_names = ["scratch", "imagenet", "SSL", "radimagenet", "simclr"]
+    
+    # 5x1のサブプロットを作成
+    fig, axes = plt.subplots(1, 5, figsize=(25, 5))
+    fig.suptitle('Representation Visualization Comparison', fontsize=16, fontweight='bold')
+    
+    # 各モデルを可視化
+    for i, model_name in enumerate(model_names):
+        print(f"Processing {model_name}...")
+        
+        # モデルを読み込み
+        model = load_model(model_name)
+        
+        # 埋め込みベクトルを取得
+        vectors, targets = get_embeddings(model, dataloader)
+        
+        # 可視化
+        scatter = visualize_single_model(model_name, vectors, targets, axes[i], label_dict)
+    
+    # カラーバーを追加（最後のサブプロットの右側に）
+    cbar = plt.colorbar(scatter, ax=axes.ravel().tolist(), shrink=0.8)
+    cbar.set_label('Class Labels', rotation=270, labelpad=15)
+    
+    # レイアウトを調整
+    plt.tight_layout()
+    
+    # 保存
+    plt.savefig(f"../visualize/all_models_comparison.png", dpi=300, bbox_inches='tight')
+    plt.close()
+    print("Saved all_models_comparison.png")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,17 @@
+acl
+SSL vs imagenet: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+SSL vs scratch: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+SSL vs radimagenet: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+SSL vs simclr: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+
+breast
+SSL vs imagenet: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+SSL vs scratch: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+SSL vs radimagenet: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+SSL vs simclr: WilcoxonResult(statistic=0.0, pvalue=1.0)
+
+thyroid
+SSL vs imagenet: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+SSL vs scratch: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+SSL vs radimagenet: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+SSL vs simclr: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)

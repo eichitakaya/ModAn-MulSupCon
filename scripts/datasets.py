@@ -115,25 +115,24 @@ def make_label_dict(df):
     return labels_dict
 
 if __name__ == "__main__":
-    # dataset = miniRINmultilabel(transform=TwoCropTransform(transforms.Compose([
-    #                             transforms.RandomResizedCrop(size=224),
-    #                             transforms.RandomHorizontalFlip(),
-    #                             transforms.RandomApply([
-    #                                 transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)
-    #                             ], p=0.8),
-    #                             transforms.RandomGrayscale(p=0.2),
-    #                             transforms.ToTensor(),
-    #                             ])))
+    dataset = miniRINmultilabel(transform=TwoCropTransform(transforms.Compose([
+                                transforms.RandomResizedCrop(size=224),
+                                transforms.RandomHorizontalFlip(),
+                                transforms.RandomApply([
+                                    transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)
+                                ], p=0.8),
+                                transforms.RandomGrayscale(p=0.2),
+                                transforms.ToTensor(),
+                                ])))
+    # データを1枚だけ取り出す
+    dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
+    for image, target in dataloader:
+        print(target)
+        break
+    # dataset = RadImageNetDataset(transform=transforms.ToTensor())
     # # データを1枚だけ取り出す
     # dataloader = DataLoader(dataset, batch_size=3, shuffle=True)
     # for image, target in dataloader:
-    #     print(image[0].shape)
+    #     print(image[0].shape, target)
     #     print(target.shape)
     #     break
-    dataset = RadImageNetDataset(transform=transforms.ToTensor())
-    # データを1枚だけ取り出す
-    dataloader = DataLoader(dataset, batch_size=3, shuffle=True)
-    for image, target in dataloader:
-        print(image[0].shape, target)
-        print(target.shape)
-        break

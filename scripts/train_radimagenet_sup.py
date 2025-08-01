@@ -15,7 +15,7 @@ import torch.backends.cudnn as cudnn
 
 # パラメータ
 num_epochs = 200
-batch_size = 32
+batch_size = 512
 
 # デバイスを設定
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

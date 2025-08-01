@@ -16,6 +16,8 @@ import os
 from torchvision.models import resnet18
 import torch.backends.cudnn as cudnn
 
+from train_simCLR import SimCLR
+
 # proxy
 os.environ["http_proxy"] = "http://proxy.l2.med.tohoku.ac.jp:8080"
 os.environ["https_proxy"] = "http://proxy.l2.med.tohoku.ac.jp:8080"
@@ -52,18 +54,36 @@ def downstream(saved_epoch_num, dataset, epochs=10, batchsize=32):
             model = resnet18(pretrained=False)
         elif args.model_type == "SSL":
             model = resnet18(pretrained=False)
+        elif args.model_type == "radimagenet":
+            model = resnet18(pretrained=False)
+            num_ftrs = model.fc.in_features
+            model.fc = nn.Linear(num_ftrs, 165)
+        elif args.model_type == "simCLR":
+            # SimCLRモデルを作成し、学習済み重みを読み込み
+            simclr_model = SimCLR(proj_hidden_dim=2048, proj_out_dim=128)
+            simclr_model.load_state_dict(torch.load(f"../experiment/simCLR/simclr_final.pth")["model"])
+            
+            # encoder部分のみを使用（projectorは除去）
+            model = simclr_model.encoder
+            
+            # 下流タスク用の分類ヘッドを追加（ResNet18の特徴量次元は512）
+            model.fc = nn.Linear(512, 2)  # 2クラス分類（バイナリ）
         else:
             raise ValueError("model_type must be 'imagenet', 'scratch' or 'SSL'")
-        # 1チャンネル対応に変更
-        model.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+        if not args.model_type == "simCLR":
+            # 1チャンネル対応に変更
+            model.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
         if args.model_type == "SSL":
             model.load_state_dict(torch.load(f"../experiment/run_0/{saved_epoch_num}_checkpoint.pth.tar")["model_state_dict"])
-        
+        elif args.model_type == "radimagenet":
+            model.load_state_dict(torch.load(f"../experiment/radimagenet_sup_200epoch.pth"))        
+
         model = model.cuda()
         cudnn.benchmark = True
 
-        # 学習済みパラメータの読み込み
-        model.fc = nn.Identity()
+        # 学習済みパラメータの読み込み（SimCLR以外の場合のみfc層を変更）
+        if args.model_type != "simCLR":
+            model.fc = nn.Identity()
 
         # 損失関数の定義
         criterion = nn.CrossEntropyLoss()
