@@ -1,0 +1,35 @@
+acl
+SSL AUC mean: 0.6805
+ImageNet AUC mean: 0.8243
+Scratch AUC mean: 0.6970
+RadImageNet AUC mean: 0.7961
+SimCLR AUC mean: 0.8441
+
+SSL vs imagenet: WilcoxonResult(statistic=0.0, pvalue=1.0)
+SSL vs scratch: WilcoxonResult(statistic=1.0, pvalue=0.9990234375)
+SSL vs radimagenet: WilcoxonResult(statistic=0.0, pvalue=1.0)
+SSL vs simclr: WilcoxonResult(statistic=0.0, pvalue=1.0)
+
+breast
+SSL AUC mean: 0.7165
+ImageNet AUC mean: 0.7805
+Scratch AUC mean: 0.7244
+RadImageNet AUC mean: 0.7234
+SimCLR AUC mean: 0.8050
+
+SSL vs imagenet: WilcoxonResult(statistic=0.0, pvalue=1.0)
+SSL vs scratch: WilcoxonResult(statistic=1.0, pvalue=0.9990234375)
+SSL vs radimagenet: WilcoxonResult(statistic=7.0, pvalue=0.986328125)
+SSL vs simclr: WilcoxonResult(statistic=0.0, pvalue=1.0)
+
+thyroid
+SSL AUC mean: 0.6389
+ImageNet AUC mean: 0.6092
+Scratch AUC mean: 0.5566
+RadImageNet AUC mean: 0.6299
+SimCLR AUC mean: 0.6567
+
+SSL vs imagenet: WilcoxonResult(statistic=42.0, pvalue=0.080078125)
+SSL vs scratch: WilcoxonResult(statistic=55.0, pvalue=0.0009765625)
+SSL vs radimagenet: WilcoxonResult(statistic=37.0, pvalue=0.1875)
+SSL vs simclr: WilcoxonResult(statistic=13.0, pvalue=0.9345703125)
