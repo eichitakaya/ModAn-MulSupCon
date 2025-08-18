@@ -13,6 +13,7 @@ from tqdm import tqdm
 import downstream_small_dataset as dd
 import argparse
 import os
+import time
 import csv
 import sklearn.metrics as metrics
 
@@ -153,6 +154,10 @@ def linear_probing(dataset, model_type, saved_epoch_num=None, epochs=10, batchsi
             # 学習
             model.train()
             running_loss = 0.0
+            # エポック計測（学習部分）
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            train_epoch_start = time.time()
             for inputs, labels in train_dataloader:
                 inputs = inputs.to("cuda:0")
                 labels = labels.to("cuda:0")
@@ -162,12 +167,19 @@ def linear_probing(dataset, model_type, saved_epoch_num=None, epochs=10, batchsi
                 loss.backward()
                 optimizer.step()
                 running_loss += loss.item()
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            train_epoch_time = time.time() - train_epoch_start
             
             avg_train_loss = running_loss / len(train_dataloader)
             
             # 検証
             model.eval()
             val_loss = 0.0
+            # エポック計測（検証部分）
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            val_epoch_start = time.time()
             with torch.no_grad():
                 for inputs, labels in val_dataloader:
                     inputs = inputs.to("cuda:0")
@@ -175,10 +187,13 @@ def linear_probing(dataset, model_type, saved_epoch_num=None, epochs=10, batchsi
                     outputs = model(inputs)
                     loss = criterion(outputs, labels)
                     val_loss += loss.item()
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            val_epoch_time = time.time() - val_epoch_start
             
             avg_val_loss = val_loss / len(val_dataloader)
             
-            print(f"Epoch {epoch+1}/{epochs} - Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}")
+            print(f"Epoch {epoch+1}/{epochs} - Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f} | train_time: {train_epoch_time:.3f} sec ({train_epoch_time/60:.2f} min), val_time: {val_epoch_time:.3f} sec ({val_epoch_time/60:.2f} min)")
             
             # 最良モデルの保存
             if avg_val_loss < best_val_loss:

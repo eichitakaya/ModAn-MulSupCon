@@ -17,6 +17,7 @@ from datasets import miniRINmultilabel
 from utils import one_hot2label
 import argparse
 from train_simCLR import SimCLR
+import matplotlib.patches as mpatches
 
 
 parser = argparse.ArgumentParser()
@@ -61,7 +62,7 @@ def load_model(model_name):
         model.eval()
 
     elif model_name == "SSL":
-        model_path = f"/workspace/HMC4RadImageNet/experiment/run_0/200_checkpoint.pth.tar"
+        model_path = f"/workspace/HMC4RadImageNet/experiment/run_0/200_lr005.tar"
         # resnet18を読み込む
         model = resnet18(weights=None)
         # 1チャンネルに変換
@@ -91,7 +92,7 @@ def get_embeddings(model, dataloader):
     return vectors, targets
 
 
-def visualize_single_model(model_name, vectors, targets, ax, label_dict):
+def visualize_single_model(model_name, vectors, targets, ax, label_dict, cmap=None):
     """単一モデルの可視化"""
     # UMAPで可視化
     reducer = umap.UMAP(n_components=2, random_state=42)
@@ -101,7 +102,8 @@ def visualize_single_model(model_name, vectors, targets, ax, label_dict):
     numeric_targets = [label_dict[target] for target in targets]
     
     # プロット
-    cmap = matplotlib.cm.get_cmap('tab20', 11)  # 11色で分割
+    if cmap is None:
+        cmap = matplotlib.cm.get_cmap('tab20', 11)  # 11色で分割
     scatter = ax.scatter(embeddings[:, 0], embeddings[:, 1], c=numeric_targets, cmap=cmap, s=3, alpha=0.7)
     ax.set_title(f'{model_name.upper()}', fontsize=12, fontweight='bold')
     ax.set_xlabel('UMAP1')
@@ -123,8 +125,19 @@ def main():
     
     print("Label dictionary:", label_dict)
     
-    # モデル名のリスト
-    model_names = ["scratch", "imagenet", "SSL", "radimagenet", "simclr"]
+    # 出力ディレクトリ
+    out_dir = "../visualize"
+    os.makedirs(out_dir, exist_ok=True)
+    
+    # モデル名のリスト（表示順）
+    model_names = ["SSL", "simclr", "radimagenet", "imagenet", "scratch"]
+    
+    # 一貫したカラーマップと凡例用ハンドル
+    cmap_shared = matplotlib.cm.get_cmap('tab20', 11)
+    legend_handles = [
+        mpatches.Patch(color=cmap_shared(label_dict[target]), label=str(target))
+        for target in unique_targets
+    ]
     
     # 5x1のサブプロットを作成
     fig, axes = plt.subplots(1, 5, figsize=(25, 5))
@@ -140,18 +153,31 @@ def main():
         # 埋め込みベクトルを取得
         vectors, targets = get_embeddings(model, dataloader)
         
-        # 可視化
-        scatter = visualize_single_model(model_name, vectors, targets, axes[i], label_dict)
-    
-    # カラーバーを追加（最後のサブプロットの右側に）
-    cbar = plt.colorbar(scatter, ax=axes.ravel().tolist(), shrink=0.8)
-    cbar.set_label('Class Labels', rotation=270, labelpad=15)
+        # 可視化（結合図の該当サブプロット）
+        scatter = visualize_single_model(model_name, vectors, targets, axes[i], label_dict, cmap=cmap_shared)
+        
+        # 5枚目（最後）のみ凡例を表示
+        if i == 4:
+            axes[i].legend(handles=legend_handles, title='Class Labels', bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0., fontsize=8)
+        
+        # 個別図を保存
+        fig_single, ax_single = plt.subplots(figsize=(5, 5))
+        scatter_single = visualize_single_model(model_name, vectors, targets, ax_single, label_dict, cmap=cmap_shared)
+        # 5枚目（最後）のみ凡例を表示
+        if i == 4:
+            ax_single.legend(handles=legend_handles, title='Class Labels', loc='best', fontsize=8)
+        plt.tight_layout()
+        single_path = os.path.join(out_dir, f"{model_name}.png")
+        plt.savefig(single_path, dpi=300, bbox_inches='tight')
+        plt.close(fig_single)
+        print(f"Saved {single_path}")
     
     # レイアウトを調整
     plt.tight_layout()
     
-    # 保存
-    plt.savefig(f"../visualize/all_models_comparison.png", dpi=300, bbox_inches='tight')
+    # 保存（結合図）
+    combined_path = os.path.join(out_dir, "all_models_comparison.png")
+    plt.savefig(combined_path, dpi=300, bbox_inches='tight')
     plt.close()
     print("Saved all_models_comparison.png")
 

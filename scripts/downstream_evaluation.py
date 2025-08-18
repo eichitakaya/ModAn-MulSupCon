@@ -12,6 +12,7 @@ from tqdm import tqdm
 import downstream_small_dataset as dd
 import argparse
 import os
+import time
 
 from torchvision.models import resnet18
 import torch.backends.cudnn as cudnn
@@ -100,6 +101,10 @@ def downstream(saved_epoch_num, dataset, epochs=10, batchsize=32):
         for epoch in range(epochs):
             model.train()
             running_loss = 0.0
+            # エポック計測（学習部分）
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            train_epoch_start = time.time()
             for inputs, labels in train_dataloader:
                 inputs = inputs.to("cuda:0")
                 labels = labels.to("cuda:0")
@@ -109,11 +114,18 @@ def downstream(saved_epoch_num, dataset, epochs=10, batchsize=32):
                 loss.backward()
                 optimizer.step()
                 running_loss += loss.item()
-            print("epoch: {}, loss: {}".format(epoch+1, running_loss))
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            train_epoch_time = time.time() - train_epoch_start
+            print("epoch: {}, loss: {}, train_time: {:.3f} sec ({:.2f} min)".format(epoch+1, running_loss, train_epoch_time, train_epoch_time/60))
+            
             scheduler.step()
             # validation
             model.eval()
             val_loss = 0.0
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            val_epoch_start = time.time()
             with torch.no_grad():
                 for inputs, labels in val_dataloader:
                     inputs = inputs.to("cuda:0")
@@ -121,10 +133,14 @@ def downstream(saved_epoch_num, dataset, epochs=10, batchsize=32):
                     outputs = model(inputs)
                     loss = criterion(outputs, labels)
                     val_loss += loss.item()
-                print("val_loss: ", val_loss)
-                if val_loss < best_val_loss:
-                    best_val_loss = val_loss
-                    best_model = model
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            val_epoch_time = time.time() - val_epoch_start
+            print("val_loss: ", val_loss)
+            print("val_time: {:.3f} sec ({:.2f} min)".format(val_epoch_time, val_epoch_time/60))
+            if val_loss < best_val_loss:
+                best_val_loss = val_loss
+                best_model = model
 
         # test
         # 1である確率をlabelsと結合し、numpy形式でreturn

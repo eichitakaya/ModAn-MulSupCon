@@ -144,7 +144,7 @@ def main():
     parser = argparse.ArgumentParser(description="SimCLR Pretraining ‑ Pure PyTorch")
     parser.add_argument("--epochs", type=int, default=200)
     parser.add_argument("--batch_size", type=int, default=256)
-    parser.add_argument("--lr", type=float, default=0.5)
+    parser.add_argument("--lr", type=float, default=0.05)
     parser.add_argument("--temperature", type=float, default=0.1)
     parser.add_argument("--proj_hidden_dim", type=int, default=2048)
     parser.add_argument("--proj_out_dim", type=int, default=128)

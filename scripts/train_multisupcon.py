@@ -176,6 +176,10 @@ def main():
         
         # train the network for one epoch
         print(f"============ Starting epoch {epoch} ... ============")
+        # エポック計測開始（GPU同期）
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        epoch_start = time.time()
         
         adjust_learning_rate(args, optimizer, epoch)
         # train the network
@@ -187,6 +191,12 @@ def main():
             epoch,
             args
         )
+        
+        # エポック計測終了（GPU同期）
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        epoch_time = time.time() - epoch_start
+        print(f"Epoch {epoch} training time: {epoch_time:.3f} sec ({epoch_time/60:.2f} min)")
         
         # save checkpoints
         if epoch % args.checkpoint_freq == 0 or epoch == args.epochs:

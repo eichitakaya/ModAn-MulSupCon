@@ -22,11 +22,11 @@ acl_simclr_list = []
 
 # stats.csvの最終行を取得
 for i in range(10):
-    acl_imagenet_list.append(pd.read_csv(f"../results/acl/miniRIN_HML_imagenet/{i+1}/acl/stats.csv").iloc[-1, :])
-    acl_scratch_list.append(pd.read_csv(f"../results/acl/miniRIN_HML_scratch/{i+1}/acl/stats.csv").iloc[-1, :])
-    acl_ssl_list.append(pd.read_csv(f"../results/acl/miniRIN_HML_SSL_{args.model_num}_lr005/{i+1}/acl/stats.csv").iloc[-1, :])
-    acl_radimagenet_list.append(pd.read_csv(f"../results/acl/miniRIN_HML_radimagenet_1/{i+1}/acl/stats.csv").iloc[-1, :])
-    acl_simclr_list.append(pd.read_csv(f"../results/acl/miniRIN_HML_simCLR_1_lr005/{i+1}/acl/stats.csv").iloc[-1, :])
+    acl_imagenet_list.append(pd.read_csv(f"../results/acl/linear_probing_imagenet_1/{i+1}/acl/stats.csv").iloc[-1, :])
+    acl_scratch_list.append(pd.read_csv(f"../results/acl/linear_probing_scratch_1/{i+1}/acl/stats.csv").iloc[-1, :])
+    acl_ssl_list.append(pd.read_csv(f"../results/acl/linear_probing_SSL_{args.model_num}_lr005/{i+1}/acl/stats.csv").iloc[-1, :])
+    acl_radimagenet_list.append(pd.read_csv(f"../results/acl/linear_probing_radimagenet_1/{i+1}/acl/stats.csv").iloc[-1, :])
+    acl_simclr_list.append(pd.read_csv(f"../results/acl/linear_probing_simCLR_1_lr005/{i+1}/acl/stats.csv").iloc[-1, :]) 
 
 # listをDataFrameに変換
 acl_imagenet_df = pd.DataFrame(acl_imagenet_list)
@@ -51,11 +51,11 @@ breast_simclr_list = []
 
 # stats.csvの最終行を取得
 for i in range(10):
-    breast_imagenet_list.append(pd.read_csv(f"../results/breast/miniRIN_HML_imagenet/{i+1}/breast/stats.csv").iloc[-1, :])
-    breast_scratch_list.append(pd.read_csv(f"../results/breast/miniRIN_HML_scratch/{i+1}/breast/stats.csv").iloc[-1, :]) 
-    breast_ssl_list.append(pd.read_csv(f"../results/breast/miniRIN_HML_SSL_{args.model_num}_lr005/{i+1}/breast/stats.csv").iloc[-1, :])
-    breast_radimagenet_list.append(pd.read_csv(f"../results/breast/miniRIN_HML_radimagenet_1/{i+1}/breast/stats.csv").iloc[-1, :])
-    breast_simclr_list.append(pd.read_csv(f"../results/breast/miniRIN_HML_simCLR_1_lr005/{i+1}/breast/stats.csv").iloc[-1, :])
+    breast_imagenet_list.append(pd.read_csv(f"../results/breast/linear_probing_imagenet_1/{i+1}/breast/stats.csv").iloc[-1, :])
+    breast_scratch_list.append(pd.read_csv(f"../results/breast/linear_probing_scratch_1/{i+1}/breast/stats.csv").iloc[-1, :]) 
+    breast_ssl_list.append(pd.read_csv(f"../results/breast/linear_probing_SSL_{args.model_num}_lr005/{i+1}/breast/stats.csv").iloc[-1, :])
+    breast_radimagenet_list.append(pd.read_csv(f"../results/breast/linear_probing_radimagenet_1/{i+1}/breast/stats.csv").iloc[-1, :])
+    breast_simclr_list.append(pd.read_csv(f"../results/breast/linear_probing_simCLR_1_lr005/{i+1}/breast/stats.csv").iloc[-1, :])
 
 # listをDataFrameに変換
 breast_imagenet_df = pd.DataFrame(breast_imagenet_list)
@@ -80,11 +80,11 @@ thyroid_simclr_list = []
 
 # stats.csvの最終行を取得
 for i in range(10):
-    thyroid_imagenet_list.append(pd.read_csv(f"../results/thyroid/miniRIN_HML_imagenet/{i+1}/thyroid/stats.csv").iloc[-1, :])
-    thyroid_scratch_list.append(pd.read_csv(f"../results/thyroid/miniRIN_HML_scratch/{i+1}/thyroid/stats.csv").iloc[-1, :])
-    thyroid_ssl_list.append(pd.read_csv(f"../results/thyroid/miniRIN_HML_SSL_{args.model_num}_lr005/{i+1}/thyroid/stats.csv").iloc[-1, :])
-    thyroid_radimagenet_list.append(pd.read_csv(f"../results/thyroid/miniRIN_HML_radimagenet_1/{i+1}/thyroid/stats.csv").iloc[-1, :])
-    thyroid_simclr_list.append(pd.read_csv(f"../results/thyroid/miniRIN_HML_simCLR_1_lr005/{i+1}/thyroid/stats.csv").iloc[-1, :])
+    thyroid_imagenet_list.append(pd.read_csv(f"../results/thyroid/linear_probing_imagenet_1/{i+1}/thyroid/stats.csv").iloc[-1, :])
+    thyroid_scratch_list.append(pd.read_csv(f"../results/thyroid/linear_probing_scratch_1/{i+1}/thyroid/stats.csv").iloc[-1, :])
+    thyroid_ssl_list.append(pd.read_csv(f"../results/thyroid/linear_probing_SSL_{args.model_num}_lr005/{i+1}/thyroid/stats.csv").iloc[-1, :])
+    thyroid_radimagenet_list.append(pd.read_csv(f"../results/thyroid/linear_probing_radimagenet_1/{i+1}/thyroid/stats.csv").iloc[-1, :])
+    thyroid_simclr_list.append(pd.read_csv(f"../results/thyroid/linear_probing_simCLR_1_lr005/{i+1}/thyroid/stats.csv").iloc[-1, :])
 
 # listをDataFrameに変換
 thyroid_imagenet_df = pd.DataFrame(thyroid_imagenet_list)
@@ -106,7 +106,7 @@ from scipy.stats import wilcoxon
 
 # aclの結果を比較（SSLのaucが有意に高いかどうか）
 # 片側
-with open(f"test_SSL_{args.model_num}.txt", "w") as f:
+with open(f"test_linear_probing_{args.model_num}.txt", "w") as f:
     f.write("acl\n")
     f.write(f"SSL AUC mean: {acl_ssl_mean['auc']:.4f}\n")
     f.write(f"ImageNet AUC mean: {acl_imagenet_mean['auc']:.4f}\n")
