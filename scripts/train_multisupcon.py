@@ -76,6 +76,8 @@ def parse_option():
                     help="experiment dump path for checkpoints and log")
     parser.add_argument("--seed", type=int, default=31, help="seed")
     parser.add_argument("--checkpoint_freq", type=int, default=1, help="checkpoint frequency")
+    parser.add_argument("--time_only", action="store_true",
+                        help="measure epoch time only; do not save any checkpoints (no model overwrite)")
     
     return parser
 
@@ -198,8 +200,8 @@ def main():
         epoch_time = time.time() - epoch_start
         print(f"Epoch {epoch} training time: {epoch_time:.3f} sec ({epoch_time/60:.2f} min)")
         
-        # save checkpoints
-        if epoch % args.checkpoint_freq == 0 or epoch == args.epochs:
+        # save checkpoints（time_onlyのときは上書きしない）
+        if not getattr(args, 'time_only', False) and (epoch % args.checkpoint_freq == 0 or epoch == args.epochs):
             checkpoint_path = os.path.join(log_path, f"{epoch}_checkpoint.pth.tar")
             checkpoint_last = os.path.join(log_path, "last_checkpoint.pth.tar")
             torch.save({ 
