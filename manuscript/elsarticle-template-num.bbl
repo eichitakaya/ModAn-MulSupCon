@@ -1,0 +1,277 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{uelwer_survey_2025}
+T.~Uelwer, J.~Robine, S.~S. Wagner, M.~Höftmann, E.~Upschulte, S.~Konietzny,
+  M.~Behrendt, S.~Harmeling, A survey on self-supervised methods for visual
+  representation learning, Machine Learning 114~(4) (2025) 1--56, publisher:
+  Springer.
+
+\bibitem{rani_self-supervised_2024}
+V.~Rani, M.~Kumar, A.~Gupta, M.~Sachdeva, A.~Mittal, K.~Kumar, Self-supervised
+  learning for medical image analysis: a comprehensive review, Evolving Systems
+  15~(4) (2024) 1607--1633, publisher: Springer.
+
+\bibitem{sugawara_breast_2025}
+K.~Sugawara, E.~Takaya, R.~Inamori, Y.~Konaka, J.~Sato, Y.~Shiratori, F.~Hario,
+  T.~Kobayashi, T.~Ueda, Y.~Okamoto, Breast cancer classification based on
+  breast tissue structures using the {Jigsaw} puzzle task in self-supervised
+  learning, Radiological Physics and Technology (2025) 1--10Publisher:
+  Springer.
+
+\bibitem{wu_distributed_2022}
+Y.~Wu, D.~Zeng, Z.~Wang, Y.~Shi, J.~Hu, Distributed contrastive learning for
+  medical image segmentation, Medical Image Analysis 81 (2022) 102564,
+  publisher: Elsevier.
+
+\bibitem{zhuang_mim_2025}
+J.~Zhuang, L.~Wu, Q.~Wang, P.~Fei, V.~Vardhanabhuti, L.~Luo, H.~Chen, Mim:
+  {Mask} in mask self-supervised pre-training for 3d medical image analysis,
+  IEEE Transactions on Medical ImagingPublisher: IEEE (2025).
+
+\bibitem{mei_radimagenet_2022}
+X.~Mei, Z.~Liu, P.~M. Robson, B.~Marinelli, M.~Huang, A.~Doshi, A.~Jacobi,
+  C.~Cao, K.~E. Link, T.~Yang, Y.~Wang, H.~Greenspan, T.~Deyer, Z.~A. Fayad,
+  Y.~Yang, \href{http://pubs.rsna.org/doi/10.1148/ryai.210315}{{RadImageNet}:
+  {An} {Open} {Radiologic} {Deep} {Learning} {Research} {Dataset} for
+  {Effective} {Transfer} {Learning}}, Radiology: Artificial Intelligence 4~(5)
+  (2022) e210315.
+\newblock \href {https://doi.org/10.1148/ryai.210315}
+  {\path{doi:10.1148/ryai.210315}}.
+\newline\urlprefix\url{http://pubs.rsna.org/doi/10.1148/ryai.210315}
+
+\bibitem{liu2024vis}
+Z.~Liu, A.~Tieu, N.~Patel, G.~Soultanidis, L.~Deyer, Y.~Wang, S.~Huver,
+  A.~Zhou, Y.~Mei, Z.~A. Fayad, et~al., Vis-mae: An efficient self-supervised
+  learning approach on medical image segmentation and classification, in:
+  International Workshop on Machine Learning in Medical Imaging, Springer,
+  2024, pp. 95--107.
+
+\bibitem{li_rotation-oriented_2021}
+X.~Li, X.~Hu, X.~Qi, L.~Yu, W.~Zhao, P.-A. Heng, L.~Xing, Rotation-oriented
+  collaborative self-supervised learning for retinal disease diagnosis, IEEE
+  Transactions on Medical Imaging 40~(9) (2021) 2284--2294, publisher: IEEE.
+
+\bibitem{chen2020simple}
+T.~Chen, S.~Kornblith, M.~Norouzi, G.~Hinton, A simple framework for
+  contrastive learning of visual representations, in: International conference
+  on machine learning, PmLR, 2020, pp. 1597--1607.
+
+\bibitem{he_momentum_2020}
+K.~He, H.~Fan, Y.~Wu, S.~Xie, R.~Girshick, Momentum contrast for unsupervised
+  visual representation learning, in: Proceedings of the {IEEE}/{CVF}
+  conference on computer vision and pattern recognition, 2020, pp. 9729--9738.
+
+\bibitem{ren_ukssl_2023}
+Z.~Ren, X.~Kong, Y.~Zhang, S.~Wang, {UKSSL}: {Underlying} knowledge based
+  semi-supervised learning for medical image classification, IEEE Open Journal
+  of Engineering in Medicine and Biology 5 (2023) 459--466, publisher: IEEE.
+
+\bibitem{sowrirajan_moco_2021}
+H.~Sowrirajan, J.~Yang, A.~Y. Ng, P.~Rajpurkar, Moco pretraining improves
+  representation and transferability of chest x-ray models, in: Medical
+  {Imaging} with {Deep} {Learning}, PMLR, 2021, pp. 728--744.
+
+\bibitem{fan_cancer_2023}
+L.~Fan, A.~Sowmya, E.~Meijering, Y.~Song,
+  \href{https://doi.org/10.1109/TMI.2022.3228275}{Cancer survival prediction
+  from whole slide images with self-supervised learning and slide consistency},
+  IEEE Transactions on Medical Imaging 42~(5) (2023) 1401--1412.
+\newblock \href {https://doi.org/10.1109/TMI.2022.3228275}
+  {\path{doi:10.1109/TMI.2022.3228275}}.
+\newline\urlprefix\url{https://doi.org/10.1109/TMI.2022.3228275}
+
+\bibitem{huang_gloria_2021}
+S.-C. Huang, L.~Shen, M.~P. Lungren, S.~Yeung, Gloria: {A} multimodal
+  global-local representation learning framework for label-efficient medical
+  image recognition, in: Proceedings of the {IEEE}/{CVF} international
+  conference on computer vision, 2021, pp. 3942--3951.
+
+\bibitem{boecking_making_2022}
+B.~Boecking, N.~Usuyama, S.~Bannur, D.~C. Castro, A.~Schwaighofer, S.~Hyland,
+  M.~Wetscherek, T.~Naumann, A.~Nori, J.~Alvarez-Valle, {others}, Making the
+  most of text semantics to improve biomedical vision–language processing,
+  in: European conference on computer vision, Springer, 2022, pp. 1--21.
+
+\bibitem{jing_multi-modal_2025}
+W.~Jing, J.~Wang, D.~Di, D.~Li, Y.~Song, L.~Fan,
+  \href{https://www.sciencedirect.com/science/article/pii/S0031320325002043}{Multi-modal
+  hypergraph contrastive learning for medical image segmentation}, Pattern
+  Recognition 165 (2025) 111544.
+\newblock \href {https://doi.org/10.1016/j.patcog.2025.111544}
+  {\path{doi:10.1016/j.patcog.2025.111544}}.
+\newline\urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0031320325002043}
+
+\bibitem{wang_hypergraph_2025}
+J.~Wang, L.~Fan, W.~Jing, D.~Di, Y.~Song, S.~Liu, C.~Cong,
+  \href{https://doi.org/10.1007/978-3-032-05141-7\_28}{Hypergraph tversky-aware
+  domain incremental learning for brain tumor segmentation with missing
+  modalities}, in: Medical Image Computing and Computer Assisted Intervention
+  -- {MICCAI} 2025, Vol. 15970 of Lecture Notes in Computer Science, Springer
+  Nature Switzerland, 2025, pp. 283--293.
+\newblock \href {https://doi.org/10.1007/978-3-032-05141-7\_28}
+  {\path{doi:10.1007/978-3-032-05141-7\_28}}.
+\newline\urlprefix\url{https://doi.org/10.1007/978-3-032-05141-7\_28}
+
+\bibitem{zhou_self_2023}
+L.~Zhou, H.~Liu, J.~Bae, J.~He, D.~Samaras, P.~Prasanna, Self pre-training with
+  masked autoencoders for medical image classification and segmentation, in:
+  2023 {IEEE} 20th {International} {Symposium} on {Biomedical} {Imaging}
+  ({ISBI}), IEEE, 2023, pp. 1--6.
+
+\bibitem{zhuang_advancing_2025}
+J.~Zhuang, L.~Luo, Q.~Wang, M.~Wu, L.~Luo, H.~Chen, Advancing {Volumetric}
+  {Medical} {Image} {Segmentation} via {Global}-{Local} {Masked}
+  {Autoencoders}, IEEE Transactions on Medical ImagingPublisher: IEEE (2025).
+
+\bibitem{xu_swin_2023}
+Z.~Xu, Y.~Dai, F.~Liu, W.~Chen, Y.~Liu, L.~Shi, S.~Liu, Y.~Zhou, Swin {MAE}:
+  masked autoencoders for small datasets, Computers in biology and medicine 161
+  (2023) 107037, publisher: Elsevier.
+
+\bibitem{yu_unest_2023}
+X.~Yu, Q.~Yang, Y.~Zhou, L.~Y. Cai, R.~Gao, H.~H. Lee, T.~Li, S.~Bao, Z.~Xu,
+  T.~A. Lasko, {others}, Unest: local spatial representation learning with
+  hierarchical transformer for efficient medical segmentation, Medical Image
+  Analysis 90 (2023) 102939, publisher: Elsevier.
+
+\bibitem{buess_video-ct_2024}
+L.~Buess, M.~F. Stollenga, D.~Schinz, B.~Wiestler, J.~Kirschke, A.~Maier,
+  N.~Navab, M.~Keicher, Video-{CT} {MAE}: {Self}-supervised {Video}-{CT}
+  {Domain} {Adaptation} for {Vertebral} {Fracture} {Diagnosis}, in: Medical
+  {Imaging} with {Deep} {Learning}, 2024.
+
+\bibitem{tang2022self}
+Y.~Tang, D.~Yang, W.~Li, H.~R. Roth, B.~Landman, D.~Xu, V.~Nath,
+  A.~Hatamizadeh, Self-supervised pre-training of swin transformers for 3d
+  medical image analysis, in: Proceedings of the IEEE/CVF conference on
+  computer vision and pattern recognition, 2022, pp. 20730--20740.
+
+\bibitem{tsoumakas_mining_2010}
+G.~Tsoumakas, I.~Katakis, I.~Vlahavas, Mining multi-label data, Data mining and
+  knowledge discovery handbook (2010) 667--685Publisher: Springer.
+
+\bibitem{boutell_learning_2004}
+M.~R. Boutell, J.~Luo, X.~Shen, C.~M. Brown, Learning multi-label scene
+  classification, Pattern recognition 37~(9) (2004) 1757--1771, publisher:
+  Elsevier.
+
+\bibitem{zhang_ml-knn_2007}
+M.-L. Zhang, Z.-H. Zhou, {ML}-{KNN}: {A} lazy learning approach to multi-label
+  learning, Pattern recognition 40~(7) (2007) 2038--2048, publisher: Elsevier.
+
+\bibitem{elisseeff_kernel_2001}
+A.~Elisseeff, J.~Weston, A kernel method for multi-labelled classification,
+  Advances in neural information processing systems 14 (2001).
+
+\bibitem{wang_cnn-rnn_2016}
+J.~Wang, Y.~Yang, J.~Mao, Z.~Huang, C.~Huang, W.~Xu, Cnn-rnn: {A} unified
+  framework for multi-label image classification, in: Proceedings of the {IEEE}
+  conference on computer vision and pattern recognition, 2016, pp. 2285--2294.
+
+\bibitem{zhu_learning_2017}
+F.~Zhu, H.~Li, W.~Ouyang, N.~Yu, X.~Wang, Learning spatial regularization with
+  image-level supervisions for multi-label image classification, in:
+  Proceedings of the {IEEE} conference on computer vision and pattern
+  recognition, 2017, pp. 5513--5522.
+
+\bibitem{chen_multi-label_2019}
+Z.-M. Chen, X.-S. Wei, P.~Wang, Y.~Guo, Multi-label image recognition with
+  graph convolutional networks, in: Proceedings of the {IEEE}/{CVF} conference
+  on computer vision and pattern recognition, 2019, pp. 5177--5186.
+
+\bibitem{you_attentionxml_2019}
+R.~You, Z.~Zhang, Z.~Wang, S.~Dai, H.~Mamitsuka, S.~Zhu, Attentionxml: {Label}
+  tree-based attention-aware deep model for high-performance extreme
+  multi-label text classification, Advances in neural information processing
+  systems 32 (2019).
+
+\bibitem{zhang_use_2022}
+S.~Zhang, R.~Xu, C.~Xiong, C.~Ramaiah,
+  \href{https://ieeexplore.ieee.org/document/9880213/}{Use {All} {The}
+  {Labels}: {A} {Hierarchical} {Multi}-{Label} {Contrastive} {Learning}
+  {Framework}}, in: 2022 {IEEE}/{CVF} {Conference} on {Computer} {Vision} and
+  {Pattern} {Recognition} ({CVPR}), IEEE, New Orleans, LA, USA, 2022, pp.
+  16639--16648.
+\newblock \href {https://doi.org/10.1109/CVPR52688.2022.01616}
+  {\path{doi:10.1109/CVPR52688.2022.01616}}.
+\newline\urlprefix\url{https://ieeexplore.ieee.org/document/9880213/}
+
+\bibitem{kokilepersaud_hex_2025}
+K.~Kokilepersaud, S.~Kim, M.~Prabhushankar, G.~AlRegib, Hex: {Hierarchical}
+  emergence exploitation in self-supervised algorithms, in: 2025 {IEEE}/{CVF}
+  {Winter} {Conference} on {Applications} of {Computer} {Vision} ({WACV}),
+  IEEE, 2025, pp. 1111--1121.
+
+\bibitem{li_hierarchical_2025}
+H.~Li, M.~Fang, X.~Li, B.~Chen, G.~Wang,
+  \href{https://linkinghub.elsevier.com/retrieve/pii/S0031320325002274}{Hierarchical
+  multi-granular multi-label contrastive learning}, Pattern Recognition 164
+  (2025) 111567.
+\newblock \href {https://doi.org/10.1016/j.patcog.2025.111567}
+  {\path{doi:10.1016/j.patcog.2025.111567}}.
+\newline\urlprefix\url{https://linkinghub.elsevier.com/retrieve/pii/S0031320325002274}
+
+\bibitem{irvin_chexpert_2019}
+J.~Irvin, P.~Rajpurkar, M.~Ko, Y.~Yu, S.~Ciurea-Ilcus, C.~Chute, H.~Marklund,
+  B.~Haghgoo, R.~Ball, K.~Shpanskaya, {others}, Chexpert: {A} large chest
+  radiograph dataset with uncertainty labels and expert comparison, in:
+  Proceedings of the {AAAI} conference on artificial intelligence, Vol.~33,
+  2019, pp. 590--597, issue: 01.
+
+\bibitem{johnson_mimic-cxr_2024}
+A.~Johnson, T.~Pollard, R.~Mark, S.~Berkowitz, S.~Horng, Mimic-cxr database,
+  PhysioNet10 13026 (2024) C2JT1Q.
+
+\bibitem{mao_imagegcn_2022}
+C.~Mao, L.~Yao, Y.~Luo, Imagegcn: {Multi}-relational image graph convolutional
+  networks for disease identification with chest x-rays, IEEE transactions on
+  medical imaging 41~(8) (2022) 1990--2003, publisher: IEEE.
+
+\bibitem{jaiswal_scalp-supervised_2021}
+A.~Jaiswal, T.~Li, C.~Zander, Y.~Han, J.~F. Rousseau, Y.~Peng, Y.~Ding,
+  Scalp-supervised contrastive learning for cardiopulmonary disease
+  classification and localization in chest x-rays using patient metadata, in:
+  2021 {IEEE} {International} {Conference} on {Data} {Mining} ({ICDM}), IEEE,
+  2021, pp. 1132--1137.
+
+\bibitem{oord_representation_2018}
+A.~v.~d. Oord, Y.~Li, O.~Vinyals, Representation learning with contrastive
+  predictive coding, arXiv preprint arXiv:1807.03748 (2018).
+
+\bibitem{khosla2020supervised}
+P.~Khosla, P.~Teterwak, C.~Wang, A.~Sarna, Y.~Tian, P.~Isola, A.~Maschinot,
+  C.~Liu, D.~Krishnan, Supervised contrastive learning, Advances in neural
+  information processing systems 33 (2020) 18661--18673.
+
+\bibitem{zaigrajew_contrastive_2022}
+V.~Zaigrajew, M.~Zieba, Contrastive learning for multi-label classification,
+  in: Proceedings of {Conference} on {Neural} {Information} {Processing}
+  {Systems}, {New} {Orleans}, 2022, pp. 1--8.
+
+\bibitem{pedraza_open_2015}
+L.~Pedraza, C.~Vargas, F.~Narváez, O.~Durán, E.~Muñoz, E.~Romero, An open
+  access thyroid ultrasound image database, in: 10th {International} symposium
+  on medical information processing and analysis, Vol. 9287, SPIE, 2015, pp.
+  188--193.
+
+\bibitem{al-dhabyani_dataset_2020}
+W.~Al-Dhabyani, M.~Gomaa, H.~Khaled, A.~Fahmy, Dataset of breast ultrasound
+  images, Data in brief 28 (2020) 104863, publisher: Elsevier.
+
+\bibitem{bien_deep-learning-assisted_2018}
+N.~Bien, P.~Rajpurkar, R.~L. Ball, J.~Irvin, A.~Park, E.~Jones, M.~Bereket,
+  B.~N. Patel, K.~W. Yeom, K.~Shpanskaya, {others}, Deep-learning-assisted
+  diagnosis for knee magnetic resonance imaging: development and retrospective
+  validation of {MRNet}, PLoS medicine 15~(11) (2018) e1002699, publisher:
+  Public Library of Science San Francisco, CA USA.
+
+\bibitem{mcinnes2018umap}
+L.~McInnes, J.~Healy, J.~Melville, Umap: Uniform manifold approximation and
+  projection for dimension reduction, arXiv preprint arXiv:1802.03426 (2018).
+
+\end{thebibliography}

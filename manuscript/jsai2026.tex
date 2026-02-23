@@ -1,0 +1,281 @@
+\usepackage{color}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{bm}
+\usepackage[utf8]{inputenc}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+%%
+\title{
+\jtitle{医用画像解析のためのマルチラベル教師あり対照学習手法の提案
+}
+\etitle{Multi-label Supervised Contrastive Learning for Medical Image Classification}
+}
+%%英文は以下を使用
+%\title{Style file for manuscripts of JSAI 20XX}
+
+\jaddress{高屋英知，東北大学 大学院医学系研究科\\
+〒 980-8575 仙台市青葉区星陵町2番1号\\
+Email: eichi.takaya.d5@tohoku.ac.jp}
+
+\author{%
+\jname{高屋 英知\first \second}
+\ename{Eichi Takaya}
+\and
+\jname{稲森 瑠星\first}
+\ename{Ryusei Inamori}
+%\and
+%Given-name Surname\third{}%%英文は左を使用
+}
+
+\affiliate{
+\jname{\first{}東北大学 大学院医学系研究科}
+\ename{Graduate School of Medicine, Tohoku University}
+\and
+\jname{\second{}聖マリアンナ医科大学 大学院医学研究科}
+\ename{St. Marianna University Graduate School of Medicine}
+}
+
+%%
+%\Vol{28}        %% <-- 28th（変更しないでください）
+%\session{0A0-00}%% <-- 講演ID（必須)
+
+\begin{abstract}
+Large-scale supervised pretraining in medical imaging is constrained by the cost of expert disease annotations, whereas routinely available metadata—such as imaging modality and anatomical region—remain underutilized. We propose a multi-label supervised contrastive pretraining framework that encodes modality and anatomical region as multi-hot targets and optimizes a Jaccard-weighted multi-label contrastive objective. A ResNet-18 encoder is pretrained on a subset of RadImageNet. We evaluate transferability by fine-tuning the pretrained encoder on three binary downstream tasks: ACL injury classification in knee MRI, lesion malignancy classification in breast ultrasound, and nodule malignancy classification in thyroid ultrasound. The proposed method achieved the best AUC on ACL (0.964) and Thyroid (0.763), and showed competitive performance on Breast (0.926), ranking second to SimCLR (0.940). These results suggest that leveraging readily available modality/anatomy metadata as supervision can provide an effective and label-efficient initialization for downstream medical image classification when fine-tuning is performed.
+
+
+\end{abstract}
+
+%\setcounter{page}{1}
+\def\Style{``jsaiac.sty''}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em%
+ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\def\JBibTeX{\leavevmode\lower .6ex\hbox{J}\kern-0.15em\BibTeX}
+\def\LaTeXe{\LaTeX\kern.15em2$_{\textstyle\varepsilon}$}
+
+\begin{document}
+\maketitle
+
+\section{はじめに}
+AIによる診断支援アプリケーションの社会実装は進展しつつあるが，特に希少疾患に対する画像診断支援を行うAIの構築には有用な事前学習モデルの構築が不可欠である．しかし，臨床専門家によるラベル付与には多大なコストと労力が必要であり，事前学習に用いるための十分な規模の教師データを継続的に確保することは容易ではない．
+一方で，病院のPACSアーカイブには膨大な未ラベル画像が蓄積されているにもかかわらず，その多くは十分に活用されていない．
+こうした状況を背景に，疾患ラベルを必要としない自己教師あり学習（SSL）が有力な選択肢として注目されている．
+
+医用画像におけるSSLの先行研究では，ジグソーパズル \cite{sugawara_breast_2025} のようなプレテキストタスク，コントラスト学習手法 \cite{wu_distributed_2022}，およびマスク付きオートエンコーダ（MAE）に基づく手法 \cite{zhuang_mim_2025} など，多様なアプローチが検討されてきた．
+しかし，複数のモダリティおよび解剖学的領域にまたがる大規模データセットを明示的に活用する事前学習戦略は，依然として十分に検討されていない． 
+RadImageNet \cite{mei_radimagenet_2022} のような事前学習用の大規模データセットは利用可能になりつつあるが，それらを活用する手法の多くは，疾患ラベルによる教師あり学習，または単純なMAE型のSSLに限られている \cite{mei_radimagenet_2022}\cite{liu2024vis}.
+
+本研究では，医用画像に特有でありながら容易に取得可能な2つの属性，すなわちモダリティと解剖学的領域を活用する事前学習手法を提案する．これらの属性は専門家アノテーションを必要とせず，ほぼすべての医用画像から取得可能であるため，高い拡張性を有する．
+
+\section{提案手法}
+任意の医用画像集合に対して，次を行う：
+
+\begin{enumerate}
+  \item 入力画像 $X$ をエンコーダ $f_{\theta}(\cdot)$ により
+        $d$ 次元の特徴ベクトル $\mathbf z$ に写像する．
+  \item 画像の\emph{メタデータ}
+        （モダリティおよび解剖学的領域）を，
+        $k$ 次元のマルチホットラベル
+        $\mathbf y\in\{0,1\}^{k}$ として符号化する．
+  \item マルチラベル・コントラスト損失を用いて $f_{\theta}$ を学習する．
+\end{enumerate}
+
+これによる学習済みエンコーダを用いて，下流タスクに対するファインチューニングを行う．
+
+% ---------------------------------------------------------------
+\subsection{マルチホットラベルの作成}
+各画像$i$に付随するメタデータとして，モダリティ$m_i \in \mathcal{M}$と解剖学的領域$r_i \in \mathcal{A}$を用いる．
+$\mathcal{M}$および$\mathcal{A}$に含まれるカテゴリ数をそれぞれ$|\mathcal{M}|$，$|\mathcal{A}|$とし，
+$m_i$と$r_i$をそれぞれワンホット表現
+$\mathbf y_i^{\mathrm{mod}}\in\{0,1\}^{|\mathcal{M}|}$，
+$\mathbf y_i^{\mathrm{ana}}\in\{0,1\}^{|\mathcal{A}|}$へ変換し，
+\[
+\mathbf y_i=[\mathbf y_i^{\mathrm{mod}};\mathbf y_i^{\mathrm{ana}}]\in\{0,1\}^{k}
+\quad (k=|\mathcal{M}|+|\mathcal{A}| )
+\]
+として連結する．
+
+% ---------------------------------------------------------------
+\subsection{マルチラベル対照損失}
+% ---------------------------------------------------------------
+各画像$i$から2つの拡張ビューを生成し，それらのビューは元画像と同一のマルチホットラベル$\mathbf y_i$を共有するとする．
+
+まず，アンカービュー $a$ とその正例ビュー $p^\ast$（同一画像の2つの拡張）に対するInfoNCE損失\cite{oord_representation_2018}を考える :
+\begin{equation}
+  \mathcal{L}_{\mathrm{InfoNCE}}
+  = -\log
+    \frac{\exp\!\bigl(\mathbf z_a^{\top}\mathbf z_{p^\ast}/T\bigr)}
+         {\displaystyle\sum_{j \in A(a)}
+          \exp\!\bigl(\mathbf z_a^{\top}\mathbf z_j / T\bigr)} .
+  \label{eq:step1}
+\end{equation}
+ここで $\mathbf z_i \in \mathbb{R}^d$ はビュー $i$ の $\ell_2$ 正規化表現，$T>0$ は温度パラメータ，
+$A(a)$ はアンカーを除く同一バッチ内の全ビュー集合である．
+
+各画像が明示的なクラスラベル $y_i$ を持つ場合，アンカー $a$ の正例集合は
+\[
+  P(a)=\{\,p \in A(a)\mid y_p=y_a\,\},
+\]
+であり，教師ありコントラスト損失は次で与えられる \cite{khosla2020supervised}：
+\begin{equation}
+  \mathcal{L}_{\mathrm{SupCon}}
+  = -\frac{1}{|P(a)|}
+    \sum_{p\in P(a)}
+    \log\frac{\exp\!\bigl(\mathbf z_a^{\top}\mathbf z_p/T\bigr)}
+              {\displaystyle\sum_{j \in A(a)}
+               \exp\!\bigl(\mathbf z_a^{\top}\mathbf z_j/T\bigr)} .
+  \label{eq:step2}
+\end{equation}
+
+マルチラベル設定においては，
+ラベル集合の部分一致を考慮するため，ペアごとの寄与はJaccard類似度により重み付けする \cite{zaigrajew_contrastive_2022}：
+\[
+  w_{ap}
+  = \mathrm{Jaccard}(\mathbf y_a,\mathbf y_p)
+  = \frac{\lvert S(a)\cap S(p)\rvert}{\lvert S(a)\cup S(p)\rvert}
+  \in [0,1]．
+\]
+ここで
+\[
+S(i)=\{\,\ell \mid (\mathbf y_i)_\ell=1\,\}
+\]
+はサンプル $i$ の有効ラベル集合である．
+ラベル類似度がしきい値 $\tau \in [0,1]$ 以上のサンプルを正例として扱い
+\[
+  P_{\tau}(a)=\{\,p \in A(a)\mid w_{ap}\ge \tau\,\}
+\]
+とする．このとき，得られる損失関数は
+\begin{equation}
+  \mathcal{L}_{\mathrm{MulSupCon}}
+  = -\frac{1}{\lvert P_{\tau}(a)\rvert}
+    \sum_{p\in P_{\tau}(a)}
+    w_{ap}\,
+    \log
+    \frac{\exp\!\bigl(\mathbf z_a^{\top}\mathbf z_p/T\bigr)}
+         {\displaystyle\sum_{j\in A(a)}
+          \exp\!\bigl(\mathbf z_a^{\top}\mathbf z_j/T\bigr)} ,
+  \label{eq:supcon-ja}
+\end{equation}
+となる．これはマルチラベル対照損失として知られている \cite{zaigrajew_contrastive_2022}．
+
+\section{実験}
+\subsection{データセット}
+\subsubsection{事前学習用データセット}
+\label{ssec:dataset-ja}
+% ---------------------------------------------------------------
+提案手法の評価には，165の疾患及び正常クラスで構成されるRadImageNet (RIN) \cite{mei_radimagenet_2022}から作成したサブセット（miniRIN）を用いた． 
+miniRINは，RINの165クラスから各クラス最大100枚の画像をランダムに抽出して構築した（合計16,222枚）．
+
+\subsubsection{下流タスク用データセット}
+miniRINで学習したエンコーダの転移性を評価するため，症例数が比較的少ない3つの公開データセット（表~\ref{tab:down_ds}）を用いた．いずれも二値分類タスクである．
+
+\begin{table}[h]
+    \centering
+    \caption{3種類の下流タスク．}
+    \label{tab:down_ds}
+    \begin{tabular}{lllll}
+        \toprule
+        データセット名 & タスク &  画像枚数 \\
+        \midrule
+        Thyroid-US \cite{pedraza_open_2015}  & 良悪性分類 & 288/61 & \\
+        Breast-US \cite{al-dhabyani_dataset_2020}  & 良悪性分類  & 569/210 & \\
+        ACL-MR \cite{bien_deep-learning-assisted_2018} & 損傷有無分類 & 569/452 &  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{実験設定}
+本研究では，以下の5つの手法を比較した：
+\begin{enumerate}
+  \item 提案手法
+  \item SimCLR \cite{chen2020simple} (miniRINSimCLR)
+  \item 疾患ラベルを用いた教師あり学習（miniRIN165）
+  \item ImageNet事前学習モデル（ImageNet）
+  \item ランダム初期化（Scratch）．
+\end{enumerate}
+
+各手法について，3つの下流タスクに対してファインチューニングを行い，5分割交差検証における平均AUCで性能を評価した．
+
+エンコーダにはResNet-18を用い，第1畳み込みのみ単一チャネル入力を受け取れるように変更した（カーネル $3{\times}3$，ストライド $1$）．マルチラベル対照損失の計算に際しては，各画像を \texttt{RandomResizedCrop}，\texttt{RandomHorizontalFlip}，\texttt{ColorJitter}，\texttt{RandomGrayscale}により2つのビューへ拡張した．
+各手法および下流タスクにおけるハイパーパラメータはそれぞれ表~\ref{tab:pretrain}，表\ref{tab:downstream}に記載した．
+\begin{table*}[t]
+  \centering
+  \caption{各手法のハイパーパラメータ．}
+  \label{tab:pretrain}
+  \small
+  \begin{tabular}{lcccccc}
+    \toprule
+    \textbf{Method}  & \textbf{$T$} & $\boldsymbol{\tau}$ &
+    \textbf{Optimizer (Learning rate)} & \textbf{Epochs} & \textbf{Batch size} \\
+    \midrule
+    提案手法  & 0.07 & 0.3 & SGD (0.05) & 1000 & 256 \\
+    miniRINSimCLR               & 0.10 & –   & SGD (0.05) & 1000 & 256 \\
+    miniRIN165            & –    & –   & Adam (0.001)               & 1000 & 256 \\
+    ImageNet             & –    & –   & –                             & –    & –   \\
+    Scratch          & –                     & –   & –                             & –    & –   \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+すべての実験は，単一のNVIDIA Quadro RTX~8000（48\,GB）GPUを用いて行った．
+
+
+
+\begin{table}[t]
+  \centering
+  \caption{下流タスクにおけるハイパーパラメータ.}
+  \label{tab:downstream}
+  \small
+  \begin{tabular}{lccc}
+    \toprule
+    \textbf{Epochs} & \textbf{Batch size} & \textbf{Optimizer} & \textbf{LR scheduler} \\
+    \midrule
+    10 & 32 & Adam ($1{\times}10^{-4}$) & StepLR$(5,\,\gamma{=}0.1)$ \\
+    \bottomrule
+  \end{tabular}\\[2pt]
+  \footnotesize
+\end{table}
+
+\section{結果および考察}
+実験結果は表~\ref{tab:finetune_auc}のようになった．
+ACLとThyroidの2タスクにおいて，提案手法が他手法を上回った．BreastではminiRINSimCLRに及ばなかったものの，その他の基本的な手法を上回る結果となった．
+
+\begin{table}[t]
+  \centering
+  \caption{各タスクにおけるAUC．}
+  \label{tab:finetune_auc}
+  \begin{tabular}{lccc}
+    \toprule
+    Method & ACL & Breast & Thyroid \\
+    \midrule
+    提案手法 & {\bf 0.964} & 0.926 & {\bf 0.763} \\
+    miniRINSimCLR   & 0.951 & {\bf 0.940} & 0.685 \\
+    miniRIN165      & 0.630 & 0.666 & 0.558 \\
+    ImageNet        & 0.876 & 0.884 & 0.696 \\
+    Scratch         & 0.907 & 0.884 & 0.677 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+提案手法では，モダリティと解剖学的領域をマルチホットラベルとして与え，ラベルの重なり具合（Jaccard類似度）が大きい画像ペアほど，より強く近づくようにエンコーダを学習する．
+このため，同じモダリティや同じ部位に属する画像が，特徴空間で近くに集まりやすくなると考えられる．
+このような初期表現を出発点にして全層ファインチューニングを行うことで，下流タスクに必要な特徴へ調整しやすくなり，結果としてAUCが向上した可能性がある．
+実際に，miniRIN（16{,}222枚）という比較的小規模な事前学習データであっても，ACLおよびThyroidで最も高いAUCが得られた．
+一方でBreastではminiRINSimCLRがわずかに上回っており，超音波画像では装置差やノイズなどの影響が大きく，モダリティ・部位といった粗いメタデータだけでは十分に表現を制約できなかった可能性が考えられる．
+
+\section{おわりに}
+本研究では，モダリティおよび解剖学的領域メタデータをマルチホットラベルとして用い，Jaccard類似度に基づく重み付けを導入したマルチラベル対照損失による事前学習手法を提案した．
+miniRINで事前学習したエンコーダを3つの下流タスクにファインチューニングした結果，ACLおよびThyroidで最高AUC（0.964，0.763）を達成し，BreastでもSimCLRに次ぐ性能（0.926）を示した．
+以上より，疾患ラベルを用いずとも，画像に付随するメタデータを教師信号として活用することで，ラベルが乏しい状況でも有用な初期表現を与えられる可能性が示された．
+
+今後は，miniRINを超える規模で事前学習をスケールさせるとともに，装置や撮像方向などを加えてマルチラベルを拡張する．また，Vision Transformerや3次元エンコーダを用いた事前学習や，より広範な下流タスクに対する検証も行っていく予定である．
+
+
+\bibliographystyle{jsai}
+\bibliography{modan}
+%%
+\end{document}

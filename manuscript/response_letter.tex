@@ -1,0 +1,151 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{setspace}
+\setstretch{1.08}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\begin{document}
+
+\begin{center}
+{\LARGE Response Letter}
+\end{center}
+
+We thank the Editor and the Reviewers for the careful reading and constructive feedback.
+We have revised the manuscript accordingly and clarified the scope of our claims.
+Below we provide a point-by-point response.
+
+\section*{Reviewer 1}
+
+\subsection*{Comment 1}
+\begin{quote}
+The method largely reuses existing multi-label supervised contrastive learning with metadata labels.
+The current framing sometimes reads as if the loss is novel rather than the application choice and evaluation.
+\end{quote}
+
+\textbf{Response.}
+Thank you for this important point. We agree and have revised the manuscript to avoid implying that the loss itself is novel.
+Our contribution is now consistently framed as:
+\begin{itemize}[leftmargin=1.5em,noitemsep,topsep=0.3em]
+\item a metadata-supervised pretraining application using established multi-label supervised contrastive learning, and
+\item a systematic transfer evaluation on three downstream tasks.
+\end{itemize}
+We updated wording in the Abstract, Introduction, Experimental Setting, and table captions to make this distinction explicit.
+
+\subsection*{Comment 2}
+\begin{quote}
+The study evaluates ModAn-MulSupCon only with a ResNet-18 and a 2D setting.
+The authors also acknowledge this limitation in the Discussion, but no evidence is provided on whether the reported under stronger architectures.
+\end{quote}
+
+\textbf{Response.}
+Thank you for raising this important limitation.
+We fully agree that evidence from stronger architectures would further strengthen the study.
+In this revision cycle, however, we were not able to add new large-scale experiments with stronger backbones because of resource and scope constraints.
+Each pretraining run requires approximately 10 minutes per epoch (as stated in the manuscript), and we currently have access to only a single GPU, which limited the number of additional experiments we could complete.
+
+To avoid over-interpretation, we revised the manuscript to:
+\begin{itemize}[leftmargin=1.5em,noitemsep,topsep=0.3em]
+\item explicitly limit claims to the tested setting (ResNet-18, 2D, miniRIN pretraining), and
+\item clearly state this as a limitation in Discussion.
+\end{itemize}
+We also added concrete future-work items: evaluation with ViT-style backbones and 3D encoders, and broader multi-institutional settings.
+
+\subsection*{Comment 3}
+\begin{quote}
+Some recent medical image work should be discussed in the Related work, such as [1][2] doing pre-training on graph models or ConvNet, [2] doing pre-training on multimodal MRI data.
+\begin{itemize}[leftmargin=1.5em,noitemsep,topsep=0.3em]
+\item [1] Multi-modal hypergraph contrastive learning for medical image segmentation, PR
+\item [2] Hypergraph Tversky-Aware Domain Incremental Learning for Brain Tumor Segmentation with Missing Modalities, MICCAI
+\item [3] Cancer survival prediction from whole slide images with self-supervised learning and slide consistency, TMI
+\end{itemize}
+\end{quote}
+
+\textbf{Response.}
+Thank you for the helpful suggestions.
+In this revision, we added the three suggested references to the Related Works section.
+We also included a brief clarification of their relevance to our study.
+At the same time, to avoid over-claiming, we did not add an extensive comparative discussion in this revision.
+Our manuscript now states more modestly that these studies address related but different settings, while our work focuses on metadata-supervised contrastive pretraining for classification transfer.
+
+\subsection*{Comment 4}
+\begin{quote}
+Each sample appears to have exactly two active labels (one modality, one anatomy).
+This should be clearly explained.
+\end{quote}
+
+\textbf{Response.}
+Thank you for this valuable suggestion.
+In the revised manuscript, we added a dedicated subsection, \emph{Multi‑Hot Label Construction}, in the Method section to explicitly describe how the labels are defined.
+We also added a concrete miniRIN example (ultrasound thyroid image) to illustrate this construction.
+
+\subsection*{Comment 5}
+\begin{quote}
+The manuscript does not quantify how many positives per anchor arise, the mechanism of contrastive learning needs further clarification.
+\end{quote}
+
+\textbf{Response.}
+Thank you for this key request.
+In the revised manuscript, we report a concise summary of this point, while we provide the detailed analysis below as reference information in this response letter.
+The concise summary has been added in Section 4.1.1 (Pretraining Dataset).
+We quantified positives per anchor under the default setting (\(\tau=0.3\), batch size \(256\), two-view setup).
+
+Main statistics (973,260 anchors):
+\begin{itemize}[leftmargin=1.5em,noitemsep,topsep=0.3em]
+\item positives per anchor: mean \(329.814\) (candidate pool \(2N-1=511\)),
+\item positive ratio \(|P_\tau(a)|/(2N-1)\): mean \(0.6478\), median \(0.6908\),
+\end{itemize}
+
+Mechanism breakdown (mean extra positives per anchor):
+\begin{itemize}[leftmargin=1.5em,noitemsep,topsep=0.3em]
+\item modality-only matches: \(216.512\),
+\item anatomy-only matches: \(53.179\),
+\item both modality+anatomy matches: \(59.122\).
+\end{itemize}
+
+\subsection*{Comment 6}
+\begin{quote}
+In Eq. (1)-(3), the contrastive losses use the negatives-only denominator.
+The manuscript does not explicitly state whether positive samples are included in the denominator.
+\end{quote}
+
+\textbf{Response.}
+Thank you for identifying the ambiguity.
+In our implementation, the denominator includes all non-self samples (positives and negatives), consistent with standard InfoNCE/SupCon.
+
+\section*{Reviewer 2}
+
+\subsection*{Comment 1}
+\begin{quote}
+Please describe more detail of your method in section 3.
+\end{quote}
+
+\textbf{Response.}
+Thank you for this valuable suggestion.
+To address this point, we added a dedicated subsection, \emph{Multi‑Hot Label Construction}, in Section 3 (Method).
+
+\subsection*{Comment 2}
+\begin{quote}
+The size of the images of each is no more less than 1000, if possible, please add more dataset or increase more images to each dataset.
+\end{quote}
+
+\textbf{Response.}
+Thank you for this suggestion.
+We agree that larger downstream datasets would further strengthen the conclusions.
+
+In this revision, we kept the three established public downstream tasks to preserve protocol comparability, and we already used repeated \(10\times5\)-fold CV to reduce variance.
+We now state this sample-size constraint more explicitly as a limitation.
+
+We also strengthened the future-work plan to include:
+\begin{itemize}[leftmargin=1.5em,noitemsep,topsep=0.3em]
+\item adding larger and more diverse downstream datasets,
+\item scaling pretraining data beyond miniRIN,
+\item broader validation across institutions and modalities.
+\end{itemize}
+
+\end{document}

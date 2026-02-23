@@ -1,0 +1,145 @@
+\relax 
+\citation{uelwer_survey_2025}
+\citation{rani_self-supervised_2024}
+\citation{sugawara_breast_2025}
+\citation{wu_distributed_2022}
+\citation{zhuang_mim_2025}
+\citation{mei_radimagenet_2022}
+\citation{mei_radimagenet_2022}
+\citation{liu2024vis}
+\Newlabel{label1}{a}
+\Newlabel{label2}{b}
+\Newlabel{label3}{c}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{}\protected@file@percent }
+\newlabel{sec1}{{1}{1}{}{section.1}{}}
+\citation{li_rotation-oriented_2021}
+\citation{sugawara_breast_2025}
+\citation{chen2020simple}
+\citation{he_momentum_2020}
+\citation{ren_ukssl_2023}
+\citation{sowrirajan_moco_2021}
+\citation{fan_cancer_2023}
+\citation{huang_gloria_2021}
+\citation{boecking_making_2022}
+\citation{jing_multi-modal_2025}
+\citation{wang_hypergraph_2025}
+\citation{zhou_self_2023}
+\citation{zhuang_advancing_2025}
+\citation{xu_swin_2023}
+\citation{yu_unest_2023}
+\citation{buess_video-ct_2024}
+\citation{tang2022self}
+\citation{mei_radimagenet_2022}
+\citation{liu2024vis}
+\citation{tsoumakas_mining_2010}
+\citation{boutell_learning_2004}
+\citation{zhang_ml-knn_2007}
+\citation{elisseeff_kernel_2001}
+\citation{wang_cnn-rnn_2016}
+\citation{zhu_learning_2017}
+\citation{chen_multi-label_2019}
+\citation{you_attentionxml_2019}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Works}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Self‑Supervised Learning (SSL) in Medical Imaging}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Learning with Multi‑Label Targets}{2}{}\protected@file@percent }
+\citation{zhang_use_2022}
+\citation{kokilepersaud_hex_2025}
+\citation{li_hierarchical_2025}
+\citation{irvin_chexpert_2019}
+\citation{johnson_mimic-cxr_2024}
+\citation{mao_imagegcn_2022}
+\citation{jaiswal_scalp-supervised_2021}
+\citation{chen_multi-label_2019}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces ModAn‑MulSupCon: a shared encoder maps images to embeddings trained with a Jaccard‑weighted multi‑label supervised contrastive loss (Eq.~\ref {eq:supcon-ja}). Metadata are encoded as a multi‑hot vector (modality+anatomy), encouraging modality‑aware clusters (CT/US/MR) and anatomical coherence (lung, abdomen, thyroid, brain, knee).}}{3}{}\protected@file@percent }
+\newlabel{overview}{{1}{3}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Modality- and Anatomy-Aware Multi-Label Supervised Contrastive Learning (ModAn-MulSupCon)}{3}{}\protected@file@percent }
+\newlabel{sec:method}{{3.1}{3}{}{subsection.3.1}{}}
+\citation{oord_representation_2018}
+\citation{khosla2020supervised}
+\citation{zaigrajew_contrastive_2022}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Multi‑Hot Label Construction}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Multi‑Label Contrastive Loss}{4}{}\protected@file@percent }
+\newlabel{eq:step1}{{1}{4}{}{equation.1}{}}
+\newlabel{eq:step2}{{2}{4}{}{equation.2}{}}
+\citation{zaigrajew_contrastive_2022}
+\citation{mei_radimagenet_2022}
+\citation{pedraza_open_2015}
+\citation{al-dhabyani_dataset_2020}
+\citation{bien_deep-learning-assisted_2018}
+\newlabel{eq:supcon-ja}{{3}{5}{}{equation.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Datasets}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Pretraining Dataset}{5}{}\protected@file@percent }
+\newlabel{ssec:dataset-ja}{{4.1.1}{5}{}{subsubsection.4.1.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Downstream Dataset}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Downstream datasets used for transfer‐learning evaluation.}}{5}{}\protected@file@percent }
+\newlabel{tab:down_ds}{{1}{5}{}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Experimental Setting}{5}{}\protected@file@percent }
+\citation{mcinnes2018umap}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Pretraining configurations across initialization settings. Common augmentations: \texttt  {RandomResizedCrop}, \texttt  {RandomHorizontalFlip}, \texttt  {ColorJitter} ($p{=}0.8$), and \texttt  {RandomGrayscale} ($p{=}0.2$).}}{6}{}\protected@file@percent }
+\newlabel{tab:pretrain}{{2}{6}{}{table.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Data splits and repetitions.}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Representation visualization.}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Implementation Details}{6}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Hyperparameters for downstream fine‑tuning and linear probing (common across tasks).}}{7}{}\protected@file@percent }
+\newlabel{tab:downstream}{{3}{7}{}{table.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Mean AUC and $p$‑values (Wilcoxon signed‑rank) after fine‑tuning with 10$\,\times \,$5‑fold CV, comparing each baseline to \revdel  {the proposed SSL}ModAn‑MulSupCon. Best AUCs are \textbf  {boldfaced}, and $p\le 0.05$ is also \textbf  {boldfaced}.}}{7}{}\protected@file@percent }
+\newlabel{tab:finetune_auc}{{4}{7}{}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Results}{7}{}\protected@file@percent }
+\newlabel{ssec:result}{{4.4}{7}{}{subsection.4.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{7}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Mean AUC and $p$-values for linear probing (pretrained encoder frozen; linear classifier only). Notation follows Table~\ref {tab:finetune_auc}.}}{8}{}\protected@file@percent }
+\newlabel{tab:lp_auc}{{5}{8}{}{table.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces UMAP projections of penultimate‑layer embeddings from five initializations— ModAn‑MulSupCon, miniRIN‑SimCLR, ImageNet, miniRIN‑165, and Scratch. Each point is colored by the combined metadata (modality+anatomy): we assign an arbitrary but fixed color to each (modality, anatomy) pair and use the same mapping across panels; the colors are nominal only and do not encode similarity, density, or frequency. }}{9}{}\protected@file@percent }
+\newlabel{fig:umap}{{2}{9}{}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{9}{}\protected@file@percent }
+\bibstyle{elsarticle-num}
+\bibdata{modan}
+\bibcite{uelwer_survey_2025}{{1}{}{{}}{{}}}
+\bibcite{rani_self-supervised_2024}{{2}{}{{}}{{}}}
+\bibcite{sugawara_breast_2025}{{3}{}{{}}{{}}}
+\bibcite{wu_distributed_2022}{{4}{}{{}}{{}}}
+\bibcite{zhuang_mim_2025}{{5}{}{{}}{{}}}
+\bibcite{mei_radimagenet_2022}{{6}{}{{}}{{}}}
+\bibcite{liu2024vis}{{7}{}{{}}{{}}}
+\bibcite{li_rotation-oriented_2021}{{8}{}{{}}{{}}}
+\bibcite{chen2020simple}{{9}{}{{}}{{}}}
+\bibcite{he_momentum_2020}{{10}{}{{}}{{}}}
+\bibcite{ren_ukssl_2023}{{11}{}{{}}{{}}}
+\bibcite{sowrirajan_moco_2021}{{12}{}{{}}{{}}}
+\bibcite{fan_cancer_2023}{{13}{}{{}}{{}}}
+\bibcite{huang_gloria_2021}{{14}{}{{}}{{}}}
+\bibcite{boecking_making_2022}{{15}{}{{}}{{}}}
+\bibcite{jing_multi-modal_2025}{{16}{}{{}}{{}}}
+\bibcite{wang_hypergraph_2025}{{17}{}{{}}{{}}}
+\bibcite{zhou_self_2023}{{18}{}{{}}{{}}}
+\bibcite{zhuang_advancing_2025}{{19}{}{{}}{{}}}
+\bibcite{xu_swin_2023}{{20}{}{{}}{{}}}
+\bibcite{yu_unest_2023}{{21}{}{{}}{{}}}
+\bibcite{buess_video-ct_2024}{{22}{}{{}}{{}}}
+\bibcite{tang2022self}{{23}{}{{}}{{}}}
+\bibcite{tsoumakas_mining_2010}{{24}{}{{}}{{}}}
+\bibcite{boutell_learning_2004}{{25}{}{{}}{{}}}
+\bibcite{zhang_ml-knn_2007}{{26}{}{{}}{{}}}
+\bibcite{elisseeff_kernel_2001}{{27}{}{{}}{{}}}
+\bibcite{wang_cnn-rnn_2016}{{28}{}{{}}{{}}}
+\bibcite{zhu_learning_2017}{{29}{}{{}}{{}}}
+\bibcite{chen_multi-label_2019}{{30}{}{{}}{{}}}
+\bibcite{you_attentionxml_2019}{{31}{}{{}}{{}}}
+\bibcite{zhang_use_2022}{{32}{}{{}}{{}}}
+\bibcite{kokilepersaud_hex_2025}{{33}{}{{}}{{}}}
+\bibcite{li_hierarchical_2025}{{34}{}{{}}{{}}}
+\bibcite{irvin_chexpert_2019}{{35}{}{{}}{{}}}
+\bibcite{johnson_mimic-cxr_2024}{{36}{}{{}}{{}}}
+\bibcite{mao_imagegcn_2022}{{37}{}{{}}{{}}}
+\bibcite{jaiswal_scalp-supervised_2021}{{38}{}{{}}{{}}}
+\bibcite{oord_representation_2018}{{39}{}{{}}{{}}}
+\bibcite{khosla2020supervised}{{40}{}{{}}{{}}}
+\bibcite{zaigrajew_contrastive_2022}{{41}{}{{}}{{}}}
+\bibcite{pedraza_open_2015}{{42}{}{{}}{{}}}
+\bibcite{al-dhabyani_dataset_2020}{{43}{}{{}}{{}}}
+\bibcite{bien_deep-learning-assisted_2018}{{44}{}{{}}{{}}}
+\bibcite{mcinnes2018umap}{{45}{}{{}}{{}}}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\gdef \@abspage@last{17}

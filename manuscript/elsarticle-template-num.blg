@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2025/Homebrew)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: elsarticle-template-num.aux
+The style file: elsarticle-num.bst
+Database file #1: modan.bib
+Warning--empty pages in buess_video-ct_2024
+You've used 45 entries,
+            2952 wiz_defined-function locations,
+            937 strings with 16978 characters,
+and the built_in function-call counts, 18674 in all, are:
+= -- 1701
+> -- 867
+< -- 21
++ -- 319
+- -- 274
+* -- 1374
+:= -- 2532
+add.period$ -- 51
+call.type$ -- 45
+change.case$ -- 62
+chr.to.int$ -- 0
+cite$ -- 46
+duplicate$ -- 626
+empty$ -- 1922
+format.name$ -- 319
+if$ -- 4747
+int.to.chr$ -- 0
+int.to.str$ -- 45
+missing$ -- 45
+newline$ -- 155
+num.names$ -- 45
+pop$ -- 331
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 1172
+stack$ -- 0
+substring$ -- 1132
+swap$ -- 220
+text.length$ -- 21
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 130
+width$ -- 47
+write$ -- 423
+(There was 1 warning)
